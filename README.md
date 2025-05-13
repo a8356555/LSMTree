@@ -93,7 +93,7 @@ print(db.read_key("b"))  # Output: None
     ├── lsm_tree.py        # Core LSMTree class
     ├── sstable.py         # SSTable read/write logic
     └── tests/
-        ├── test_lsm.py
+        ├── test_lsm_tree.py
         └── ...
 
 ## 🌱 Branches
