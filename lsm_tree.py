@@ -10,7 +10,7 @@ class LSMTree:
 
     def write(self, key, value):
         self.mem_table[key] = value
-        if len(self.mem_table) > self.flush_threshold:
+        if len(self.mem_table) >= self.flush_threshold:
             self.flush()
 
     def read(self, key):
@@ -31,7 +31,7 @@ class LSMTree:
         self.mem_table = {}
         self.last_sstable_id += 1
 
-        if len(self.sstables) > self.compact_threshold:
+        if len(self.sstables) >= self.compact_threshold:
             self.compact()
 
     def compact(self):
