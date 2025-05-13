@@ -30,7 +30,7 @@ It mimics the storage engine design commonly used in modern databases such as Le
   - `compact()`: Merge SSTables, remove duplicate keys, keep the newest value.
 
 - **SSTable**
-  - `write(data: List[Tuple[key, value]])`: Saves sorted data to disk.
+  - `save(mem_table)`: sorted mem_table and save to disk.
   - `read_key(key)`: Linear search for key in SSTable.
   - `read_records()`: Generator to lazily iterate over all records.
 
@@ -95,6 +95,14 @@ print(db.read_key("b"))  # Output: None
     └── tests/
         ├── test_lsm.py
         └── ...
+
+## 🌱 Branches
+
+- `feature/v1-basic-lsm-tree`: write/read/flush/compact
+- `feature/v2-range-delete`: range queries, deletions, tombstone compaction
+- `v3-performance`: WAL, Bloom Filter, SkipList
+- `v4-concurrency`: thread-safe LSM Tree
+
 
 ## 🧪 Testing
 ```bash
