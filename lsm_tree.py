@@ -1,8 +1,9 @@
 from sstable import SSTable
 
 class LSMTree:
-    def __init__(self, flush_threshold):
+    def __init__(self, flush_threshold=5, compact_threshold=5):
         self.flush_threshold = flush_threshold
+        self.compact_threshold = compact_threshold
         self.mem_table = {}
         self.sstables = []
         self.last_sstable_id = 0
@@ -30,3 +31,21 @@ class LSMTree:
         self.mem_table = {}
         self.last_sstable_id += 1
 
+        if len(self.sstables) > self.compact_threshold:
+            self.compact()
+
+    def compact(self):
+        merged = {}
+        for sstable in self.sstables:
+            for record in sstable.read_records():
+                key = record['key']
+                value = record['value']
+                merged[key] = value
+
+        self.sstables = []
+
+        filename = f'sstable_{self.last_sstable_id}.txt'
+        new_sstable = SSTable(filename)
+        new_sstable.save(merged)
+        self.sstables.append(new_sstable)
+        self.last_sstable_id += 1
