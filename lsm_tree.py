@@ -19,6 +19,9 @@ class LSMTree:
             return self.mem_table[key]
 
         for sstable in self.sstables[::-1]:
+            if not sstable.min_key <= key <= sstable.max_key:
+                continue
+
             data = sstable.read_key(key)
             if data is not None:
                 return data
@@ -31,6 +34,9 @@ class LSMTree:
                 result[key] = self.mem_table[key]
 
         for sstable in self.sstables[::-1]:
+            if start_key > sstable.max_key or end_key < sstable.min_key:
+                continue
+
             for record in sstable.read_records():
                 key, value = record["key"], record["value"]
                 if record["key"] in result:
