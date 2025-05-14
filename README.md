@@ -1,6 +1,6 @@
 # LSMTree: A Python Implementation of Log-Structured Merge-Tree
 
-This project is a progressive, educational implementation of an LSM Tree (Log-Structured Merge-Tree) in Python.  
+This project is a progressive, educational implementation of an LSM Tree (Log-Structured Merge-Tree) in Python.
 It mimics the storage engine design commonly used in modern databases such as LevelDB, RocksDB, and Cassandra.
 
 ---

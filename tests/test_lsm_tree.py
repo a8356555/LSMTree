@@ -1,12 +1,12 @@
 import os
 import shutil
-import tempfile
-import json
 import sys
+import tempfile
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from lsm_tree import LSMTree
-from sstable import SSTable
+
 
 def test_lsm_tree_basic():
     # 建立臨時資料夾來保存 sstable 檔案
@@ -23,11 +23,11 @@ def test_lsm_tree_basic():
         assert os.path.exists("sstable_0.txt")
 
         lsm.write("c", "cat")
-        lsm.write("d", "dog")     # flush 1
+        lsm.write("d", "dog")  # flush 1
         assert os.path.exists("sstable_1.txt")
 
         lsm.write("e", "egg")
-        lsm.write("f", "fish")    # flush 2 → 觸發 compact
+        lsm.write("f", "fish")  # flush 2 → 觸發 compact
         assert os.path.exists("sstable_2.txt")
         assert len(lsm.sstables) == 1  # compact 合併後只剩一個 sstable
 
@@ -59,9 +59,9 @@ def test_lsm_tree_read_range():
         lsm.write("a", "apple")
         lsm.write("b", "banana")  # flush 0
         lsm.write("c", "cat")
-        lsm.write("d", "dog")     # flush 1
+        lsm.write("d", "dog")  # flush 1
         lsm.write("e", "egg")
-        lsm.write("f", "fish")    # flush 2 → compact
+        lsm.write("f", "fish")  # flush 2 → compact
 
         # 再寫入一些在 memtable 中的資料
         lsm.write("g", "goat")
@@ -69,12 +69,7 @@ def test_lsm_tree_read_range():
 
         # 測試範圍查詢
         result = lsm.read_range("b", "e")
-        expected = {
-            "b": "banana",
-            "c": "cat",
-            "d": "dog",
-            "e": "egg"
-        }
+        expected = {"b": "banana", "c": "cat", "d": "dog", "e": "egg"}
 
         assert result == expected, f"Expected {expected}, but got {result}"
 
@@ -87,7 +82,7 @@ def test_lsm_tree_read_range():
             "e": "egg",
             "f": "fish",
             "g": "goat",
-            "h": "hat"
+            "h": "hat",
         }
 
         assert result2 == expected2, f"Expected {expected2}, but got {result2}"
