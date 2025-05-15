@@ -51,7 +51,7 @@ class LSMTree:
         new_sstable = SSTable(filename)
         new_sstable.save(self.mem_table)
         self.sstables.append(new_sstable)
-        self.mem_table = {}
+        self.mem_table.clear()
         self.last_sstable_id += 1
 
         if len(self.sstables) >= self.compact_threshold:
@@ -64,7 +64,7 @@ class LSMTree:
                 key, value = record["key"], record["value"]
                 merged[key] = value
 
-        self.sstables = []
+        self.sstables.clear()
 
         filename = f"sstable_{self.last_sstable_id}.txt"
         new_sstable = SSTable(filename)
